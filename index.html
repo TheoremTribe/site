@@ -445,6 +445,43 @@ footer {
 .social-reveal {
   white-space: nowrap;
 }
+/* ================= MOBILE FIX FOR LOGOS ================= */
+@media (max-width: 768px) {
+
+  /* Stack everything vertically */
+  .logos-section {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  /* Each organisation stacks */
+  .logo-group {
+    position: static;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Logos stay centered */
+  .logo img {
+    width: 110px;
+  }
+
+  /* Social buttons BELOW logos */
+  .social-reveal {
+    position: static;
+    opacity: 1 !important;       /* always visible on mobile */
+    transform: none !important;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  /* Disable split animation on mobile */
+  .logos-section.active .logo-group.left,
+  .logos-section.active .logo-group.right {
+    transform: none;
+  }
+}
 
 
 
