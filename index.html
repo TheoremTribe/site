@@ -482,6 +482,53 @@ footer {
     transform: none;
   }
 }
+/* ================== MOBILE LOGO FIX (HARD RESET) ================== */
+@media (max-width: 768px) {
+
+  /* Reset whole logo section */
+  .logos-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+  }
+
+  /* Each org becomes its own vertical block */
+  .logo-group {
+    position: static !important;
+    flex-direction: column !important;
+    align-items: center;
+    gap: 16px;
+    transform: none !important;
+  }
+
+  /* Logos centered */
+  .logo {
+    position: static !important;
+    transform: none !important;
+  }
+
+  .logo img {
+    width: 110px;
+  }
+
+  /* RESET socials completely */
+  .social-reveal,
+  .socials-left,
+  .socials-right {
+    position: static !important;
+    opacity: 1 !important;
+    transform: none !important;
+    display: flex !important;
+    gap: 14px;
+    justify-content: center;
+  }
+
+  /* Disable scroll animation effect */
+  .logos-section.active .logo-group.left,
+  .logos-section.active .logo-group.right {
+    transform: none !important;
+  }
+}
 
 
 
