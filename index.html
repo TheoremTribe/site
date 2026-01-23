@@ -1,747 +1,991 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Theorem Tribe × Steminate Research Seminar</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
-
-<style>
-:root {
-  --primary: #6a5cff;
-  --secondary: #00d4ff;
-  --accent: #00ffa3;
-  --bg-dark: #0b0f1a;
-  --glass: rgba(255,255,255,0.08);
-  --text: #e6e6f0;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background: radial-gradient(circle at top, #131a3a, var(--bg-dark));
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-  cursor: none;
-}
-
-/* ================= CURSOR ================= */
-.cursor {
-  position: fixed;
-  width: 14px;
-  height: 14px;
-  border: 2px solid var(--secondary);
-  border-radius: 50%;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  transition: transform 0.15s ease;
-}
-
-.cursor::after {
-  content: '';
-  position: absolute;
-  inset: -14px;
-  border-radius: 50%;
-  background: rgba(0,212,255,0.15);
-  filter: blur(14px);
-}
-
-@media (max-width: 768px) {
-  body { cursor: auto; }
-  .cursor { display: none; }
-}
-
-/* ================= PARTICLES ================= */
-#particles {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-}
-
-/* ================= LAYOUT ================= */
-header {
-  text-align: center;
-  padding: 80px 20px 40px;
-}
-
-.hero-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  background: linear-gradient(90deg, var(--secondary), var(--accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 16px;
-  transform-style: preserve-3d; 
-  will-change: transform;
-  transition: transform 0.3s ease, text-shadow 0.3s ease;
-}
-
-.hero-title.active {
-  text-shadow:
-    0 0 18px rgba(0,212,255,0.7),
-    0 0 32px rgba(0,255,163,0.5);
-}
-
-header p {
-  max-width: 820px;
-  margin: auto;
-  opacity: 0.9;
-}
-
-.section {
-  max-width: 1100px;
-  margin: auto;
-  padding: 60px 20px;
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-/* ================= LOGO SPLIT SCROLL EFFECT ================= */
-
-.logos-section {
-  position: relative;
-  margin: 120px auto 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-  overflow: hidden;
-}
-
-.logo {
-  transition: transform 0.4s ease;
-  z-index: 2;
-}
-
-.social-reveal {
-  position: absolute;
-  display: flex;
-  gap: 40px;
-  opacity: 0;
-  transform: scale(0.85);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.social-reveal a {
-  color: white;
-  font-weight: 600;
-  text-decoration: none;
-  padding: 12px 22px;
-  border-radius: 20px;
-  background: linear-gradient(120deg, var(--primary), var(--secondary));
-  box-shadow: 0 0 30px rgba(0,212,255,0.4);
-}
-
-/* Active state */
-.logos-section.active .logo-left {
-  transform: translateX(-160px);
-}
-
-.logos-section.active .logo-right {
-  transform: translateX(160px);
-}
-
-.logos-section.active .social-reveal {
-  opacity: 1;
-  transform: scale(1);
-}
-
-
-/* ================= CARDS ================= */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 30px;
-}
-
-.card {
-  background: var(--glass);
-  backdrop-filter: blur(14px);
-  padding: 32px;
-  border-radius: 26px;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  will-change: transform;
-}
-
-.card:hover {
-  box-shadow: 0 30px 80px rgba(0,212,255,0.4);
-}
-
-.card h3 {
-  color: var(--secondary);
-  margin-bottom: 12px;
-}
-
-/* ================= MAGNETIC ================= */
-.magnetic {
-  transform-style: preserve-3d;
-}
-
-/* ================= HIGHLIGHT ================= */
-.highlight {
-  margin-top: 60px;
-  padding: 40px;
-  border-radius: 28px;
-  background: linear-gradient(120deg, var(--primary), var(--secondary));
-  box-shadow: 0 0 50px rgba(106,92,255,0.4);
-}
-
-/* ================= GUEST SHIMMER ================= */
-.coming-soon::after {
-  content: "COMING SOON";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    120deg,
-    rgba(255,255,255,0.05) 20%,
-    rgba(255,255,255,0.18) 40%,
-    rgba(255,255,255,0.05) 60%
-  );
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: rgba(0,255,212,0.85);
-  animation: shimmer 3.5s infinite linear;
-  pointer-events: none;
-}
-
-@keyframes shimmer {
-  from { background-position: -200% 0; }
-  to { background-position: 200% 0; }
-}
-
-/* ================= LOGOS ================= */
-.logos {
-  margin: 100px auto 60px;
-  display: flex;
-  justify-content: center;
-  gap: 80px;
-}
-
-.logos img {
-  width: 120px;
-  border-radius: 16px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
-  transition: transform 0.4s ease;
-}
-
-.logos img:hover {
-  transform: scale(1.12);
-}
-
-.logo {
-  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-.social-reveal {
-  transition-delay: 0.15s;
-}
-
-
-footer {
-  text-align: center;
-  padding: 30px;
-  opacity: 0.7;
-}
-
-/* ================= REGISTRATION CARD ================= */
-
-.registration-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-}
-
-.register-card {
-  max-width: 520px;
-  text-align: center;
-  text-decoration: none;
-  color: var(--text);
-  cursor: pointer;
-}
-
-.register-card h3 {
-  font-size: 1.6rem;
-}
-
-.register-card .register-cta {
-  display: inline-block;
-  margin-top: 18px;
-  font-weight: 600;
-  color: var(--accent);
-  letter-spacing: 0.5px;
-}
-
-/* Extra emphasis on hover */
-.register-card:hover {
-  box-shadow: 0 40px 100px rgba(0,255,163,0.45);
-}
-
-/* ================= LOGO GROUPS ================= */
-
-.logos-section {
-  position: relative;
-  margin: 120px auto 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 60px;
-  overflow: hidden;
-}
-
-.logo-group {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-.logo img {
-  width: 120px;
-  border-radius: 16px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
-}
-
-/* Social buttons */
-.social-reveal {
-  display: flex;
-  gap: 20px;
-  opacity: 0;
-  transform: scale(0.85);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.social-reveal a {
-  color: white;
-  font-weight: 600;
-  text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 18px;
-  background: linear-gradient(120deg, var(--primary), var(--secondary));
-  box-shadow: 0 0 25px rgba(0,212,255,0.4);
-}
-
-/* Active scroll state */
-.logos-section.active .logo-group.left {
-  transform: translateX(-120px);
-}
-
-.logos-section.active .logo-group.right {
-  transform: translateX(120px);
-}
-
-.logos-section.active .social-reveal {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* ================= LOGO SPLIT + SOCIAL REVEAL (FIXED) ================= */
-
-.logos-section {
-  position: relative;
-  margin: 120px auto 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 80px;
-  overflow: visible; /* IMPORTANT */
-}
-
-.logo-group {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-}
-
-/* Ensure logos are ALWAYS visible */
-.logo {
-  opacity: 1 !important;
-  transform: none;
-}
-
-.logo img {
-  width: 120px;
-  height: auto;
-  display: block;
-  border-radius: 16px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
-}
-
-/* Socials hidden by default */
-.social-reveal {
-  display: flex;
-  gap: 18px;
-  opacity: 0;
-  transform: scale(0.85);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-/* Social buttons */
-.social-reveal a {
-  color: white;
-  font-weight: 600;
-  text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 18px;
-  background: linear-gradient(120deg, var(--primary), var(--secondary));
-  box-shadow: 0 0 25px rgba(0,212,255,0.4);
-}
-
-/* Scroll-triggered state */
-.logos-section.active .logo-group.left {
-  transform: translateX(-120px);
-}
-
-.logos-section.active .logo-group.right {
-  transform: translateX(120px);
-}
-
-.logos-section.active .social-reveal {
-  opacity: 1;
-  transform: scale(1);
-}
-/* ---- FINAL CENTERED LOGOS + OUTER SOCIALS FIX ---- */
-
-.logos-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 80px;
-}
-
-/* Keep logo groups clean */
-.logo-group {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-/* Place socials OUTSIDE the logos */
-.socials-left {
-  position: absolute;
-  right: 160px;   /* move left handles outward */
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.socials-right {
-  position: absolute;
-  left: 160px;    /* move right handles outward */
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-/* Prevent overlap */
-.social-reveal {
-  white-space: nowrap;
-}
-/* ================= MOBILE FIX FOR LOGOS ================= */
-@media (max-width: 768px) {
-
-  /* Stack everything vertically */
-  .logos-section {
-    flex-direction: column;
-    gap: 40px;
-  }
-
-  /* Each organisation stacks */
-  .logo-group {
-    position: static;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  /* Logos stay centered */
-  .logo img {
-    width: 110px;
-  }
-
-  /* Social buttons BELOW logos */
-  .social-reveal {
-    position: static;
-    opacity: 1 !important;       /* always visible on mobile */
-    transform: none !important;
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-  }
-
-  /* Disable split animation on mobile */
-  .logos-section.active .logo-group.left,
-  .logos-section.active .logo-group.right {
-    transform: none;
-  }
-}
-/* ================== MOBILE LOGO FIX (HARD RESET) ================== */
-@media (max-width: 768px) {
-
-  /* Reset whole logo section */
-  .logos-section {
-    flex-direction: column;
-    align-items: center;
-    gap: 48px;
-  }
-
-  /* Each org becomes its own vertical block */
-  .logo-group {
-    position: static !important;
-    flex-direction: column !important;
-    align-items: center;
-    gap: 16px;
-    transform: none !important;
-  }
-
-  /* Logos centered */
-  .logo {
-    position: static !important;
-    transform: none !important;
-  }
-
-  .logo img {
-    width: 110px;
-  }
-
-  /* RESET socials completely */
-  .social-reveal,
-  .socials-left,
-  .socials-right {
-    position: static !important;
-    opacity: 1 !important;
-    transform: none !important;
-    display: flex !important;
-    gap: 14px;
-    justify-content: center;
-  }
-
-  /* Disable scroll animation effect */
-  .logos-section.active .logo-group.left,
-  .logos-section.active .logo-group.right {
-    transform: none !important;
-  }
-}
-
-
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theorem Tribe x Steminate | Research & Innovation</title>
+    <meta name="description"
+        content="A collaborative initiative to ignite research culture, innovation, and curiosity among students.">
+
+    <!-- Fonts: Playfair Display (Prestige) & Outfit (Precision) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            /* --- Palette: Visionary Research Lab --- */
+            --bg-main: #F8FAFC;
+            /* Slate 50 - Softer than pure white */
+            --bg-secondary: #ffffff;
+            --text-main: #1E293B;
+            /* Slate 800 */
+            --text-muted: #64748B;
+            /* Slate 500 */
+            --primary: #4F46E5;
+            /* Indigo 600 - Vibrant & Trustworthy */
+            --primary-hover: #4338CA;
+            --accent: #06B6D4;
+            /* Cyan 500 - Innovation */
+            --border: #E2E8F0;
+            --card-bg: #ffffff;
+            --grid-line: rgba(79, 70, 229, 0.04);
+            /* Subtle primary tint */
+
+            /* --- Typography --- */
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Outfit', sans-serif;
+
+            /* --- Animation --- */
+            --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+            --transition-theme: 0.4s ease-in-out;
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #0B1121;
+            /* Deepest Navy */
+            --bg-secondary: #161E32;
+            /* Lighter Navy for sections */
+            --text-main: #F1F5F9;
+            --text-muted: #94A3B8;
+            --primary: #818CF8;
+            /* Indigo 400 - Glowing */
+            --primary-hover: #6366F1;
+            --accent: #22D3EE;
+            /* Cyan 400 */
+            --border: #1E293B;
+            --card-bg: #161E32;
+            --grid-line: rgba(255, 255, 255, 0.03);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Universal Theme Transition */
+        body,
+        div,
+        section,
+        nav,
+        button,
+        a,
+        span,
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        ul,
+        li {
+            transition: background-color var(--transition-theme), color var(--transition-theme), border-color var(--transition-theme), box-shadow var(--transition-theme);
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 40px 40px;
+            zoom: 100%;
+            /* Default Zoom */
+        }
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--border);
+            border-radius: 100px;
+            border: 3px solid var(--bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--text-muted);
+        }
+
+        /* --- Layout Utilities --- */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            /* Fixed Padding */
+        }
+
+        .section-spacer {
+            padding: 100px 0;
+        }
+
+        /* --- Navigation --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 16px 0;
+            z-index: 1000;
+            background: rgba(var(--bg-main), 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        [data-theme="light"] .navbar {
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        [data-theme="dark"] .navbar {
+            background: rgba(2, 6, 23, 0.85);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--border);
+        }
+
+        .brand-sub {
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* --- Theme Toggle --- */
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .icon-container {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .icon-moon,
+        .icon-sun {
+            position: absolute;
+            transition: opacity 0.3s ease, transform 0.5s ease;
+        }
+
+        /* Logic: Light Theme -> Show Moon (to go Dark). Dark Theme -> Show Sun (to go Light) */
+        [data-theme="light"] .icon-container {
+            transform: rotate(0deg);
+        }
+
+        [data-theme="light"] .icon-moon {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        [data-theme="light"] .icon-sun {
+            opacity: 0;
+            transform: scale(0.5) rotate(90deg);
+        }
+
+        [data-theme="dark"] .icon-container {
+            transform: rotate(180deg);
+        }
+
+        [data-theme="dark"] .icon-moon {
+            opacity: 0;
+            transform: scale(0.5) rotate(-90deg);
+        }
+
+        [data-theme="dark"] .icon-sun {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding-top: 80px;
+        }
+
+        .hero-label {
+            font-family: var(--font-sans);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--primary);
+            margin-bottom: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--primary);
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 6vw, 5rem);
+            line-height: 1.1;
+            margin-bottom: 32px;
+            max-width: 900px;
+        }
+
+        .hero-title span {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .hero-desc {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 48px;
+        }
+
+        .btn-wrapper {
+            margin-bottom: 60px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--primary);
+            color: white !important;
+            padding: 16px 32px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(67, 56, 202, 0.4);
+        }
+
+        .hero-socials {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .hero-social-link {
+            color: var(--text-muted);
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .hero-social-link:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* --- Custom Tooltip --- */
+        [data-tooltip] {
+            position: relative;
+        }
+
+        [data-tooltip]::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-8px);
+            background: var(--text-main);
+            color: var(--bg-main);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        [data-tooltip]::after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(0px);
+            border-width: 6px;
+            border-style: solid;
+            border-color: var(--text-main) transparent transparent transparent;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 10;
+        }
+
+        [data-tooltip]:hover::before {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-12px);
+        }
+
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-6px);
+        }
+
+        /* --- Seamless Marquee --- */
+        .marquee-wrapper {
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 24px 0;
+            background: var(--bg-secondary);
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 60px;
+            width: max-content;
+            animation: scroll 40s linear infinite;
+        }
+
+        .marquee-item {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--text-muted);
+            opacity: 0.6;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        .marquee-item::after {
+            content: '\2022';
+            color: var(--primary);
+        }
+
+        /* --- Bento Grid --- */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            margin-bottom: 80px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+        }
+
+        .col-6 {
+            grid-column: span 6;
+        }
+
+        .col-12 {
+            grid-column: span 12;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .card-num {
+            font-family: var(--font-sans);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            opacity: 0.3;
+            line-height: 1;
+        }
+
+        .card-icon {
+            color: var(--primary);
+        }
+
+        .card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            margin-bottom: 16px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        /* --- Speakers Section --- */
+        .speakers-container {
+            text-align: center;
+            padding: 60px 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin-top: 40px;
+        }
+
+        .speakers-placeholder {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* --- Meeting Details --- */
+        .details-card {
+            background: var(--bg-main);
+            border: 1px solid var(--primary);
+            padding: 32px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .detail-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(67, 56, 202, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .detail-text h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .detail-text p {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* --- Sleek Premium Footer --- */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 80px 0 32px;
+            margin-top: 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle glow in footer */
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0.5;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .footer-brand-section {
+            max-width: 300px;
+        }
+
+        .footer-brand-name {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .footer-tagline {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .footer-nav-group {
+            display: flex;
+            gap: 80px;
+            flex-wrap: wrap;
+        }
+
+        .footer-col h4 {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.8;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            opacity: 1;
+            transform: translateX(4px);
+        }
+
+        .footer-divider {
+            height: 1px;
+            background: var(--border);
+            width: 100%;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-social-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-main);
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-main);
+            transition: all 0.2s;
+        }
+
+        .footer-social-pill:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 768px) {
+            body {
+                zoom: 1;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+
+            .bento-grid {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .details-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+            }
+
+            .footer-top {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .footer-nav-group {
+                gap: 40px;
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* --- Animations --- */
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<canvas id="particles"></canvas>
-<div class="cursor" id="cursor"></div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="#" class="brand">
+                <span>TheoremTribe</span>
+            </a>
 
-<header>
-  <h1 class="hero-title">Theorem Tribe × Steminate Research Seminar</h1>
-  <p>
-    A collaborative initiative to ignite research culture, innovation,
-    and curiosity among students.
-  </p>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
+                <div class="icon-container">
+                    <i data-lucide="moon" class="icon-moon"></i>
+                    <i data-lucide="sun" class="icon-sun"></i>
+                </div>
+            </button>
+        </div>
+    </nav>
 
-  <div class="registration-wrapper">
-  <a
-    href="https://docs.google.com/forms/d/e/1FAIpQLSccLYIxGpLJr1PlWcCuVe-Edpx22XtK7eg_KqqEDwojEXyBKA/viewform?usp=publish-editor"
-    target="_blank"
-    rel="noopener"
-    class="card magnetic register-card"
-  >
-    <h3>Register for the Webinar</h3>
-    <p>
-      Secure your spot for the Theorem Tribe × Steminate Research Seminar.
-      Open to students curious about research, innovation, and real-world science.
-    </p>
-    <span class="register-cta">Click to Register →</span>
-  </a>
-</div>
+    <!-- Hero -->
+    <section class="container hero" id="home">
+        <div class="hero-label">Est. 2025</div>
+        <h1 class="hero-title">
+            Bridging <span>Theory</span> & <span>Innovation</span>.
+        </h1>
+        <p class="hero-desc">
+            A collaborative initiative by Theorem Tribe and Steminate to ignite research culture and scientific
+            curiosity.
+        </p>
+        <div class="btn-wrapper">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSccLYIxGpLJr1PlWcCuVe-Edpx22XtK7eg_KqqEDwojEXyBKA/viewform?usp=publish-editor"
+                target="_blank" rel="noopener" class="btn-primary">
+                <span>Secure Your Spot</span>
+                <i data-lucide="arrow-right" size="18"></i>
+            </a>
+        </div>
 
-</header>
+        <p
+            style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 25px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500;">
+            Follow us to stay updated!
+        </p>
+        <div class="hero-socials">
+            <a href="https://www.instagram.com/theorem_tribe/" target="_blank" class="hero-social-link"
+                data-tooltip="Theorem Tribe Instagram">
+                <i data-lucide="instagram" size="24"></i>
+            </a>
+            <a href="https://www.linkedin.com/company/theorem-tribe" target="_blank" class="hero-social-link"
+                data-tooltip="Theorem Tribe LinkedIn">
+                <i data-lucide="linkedin" size="24"></i>
+            </a>
+            <div style="width: 1px; height: 24px; background: var(--border);"></div>
+            <a href="https://www.instagram.com/steminateindia/" target="_blank" class="hero-social-link"
+                data-tooltip="Steminate Instagram">
+                <i data-lucide="instagram" size="24"></i>
+            </a>
+            <a href="https://www.linkedin.com/company/steminate" target="_blank" class="hero-social-link"
+                data-tooltip="Steminate LinkedIn">
+                <i data-lucide="linkedin" size="24"></i>
+            </a>
+        </div>
+    </section>
 
-<section class="section">
-  <h2>About the Organisers</h2>
-
-  <div class="cards">
-    <div class="card magnetic">
-      <h3>Theorem Tribe</h3>
-      <p>
-        Theorem Tribe focuses on deep research — reading academic papers,
-        building strong theoretical foundations, experimenting with ideas,
-        and nurturing long-term scientific curiosity through collaboration.
-      </p>
+    <!-- Marquee (Seamless Loop) -->
+    <div class="marquee-wrapper">
+        <div class="marquee-track">
+            <span class="marquee-item">Research Methodology</span>
+            <span class="marquee-item">Critical Thinking</span>
+            <span class="marquee-item">Innovation</span>
+            <span class="marquee-item">Academic Writing</span>
+            <span class="marquee-item">Peer Review</span>
+            <span class="marquee-item">Research Methodology</span>
+            <span class="marquee-item">Critical Thinking</span>
+            <span class="marquee-item">Innovation</span>
+            <span class="marquee-item">Academic Writing</span>
+            <span class="marquee-item">Peer Review</span>
+            <span class="marquee-item">Research Methodology</span>
+            <span class="marquee-item">Critical Thinking</span>
+            <span class="marquee-item">Innovation</span>
+            <span class="marquee-item">Academic Writing</span>
+            <span class="marquee-item">Peer Review</span>
+            <span class="marquee-item">Research Methodology</span>
+            <span class="marquee-item">Critical Thinking</span>
+            <span class="marquee-item">Innovation</span>
+            <span class="marquee-item">Academic Writing</span>
+            <span class="marquee-item">Peer Review</span>
+        </div>
     </div>
 
-    <div class="card magnetic">
-      <h3>Steminate</h3>
-      <p>
-        Steminate emphasizes mentorship and real-world problem solving,
-        guiding students through practical challenges, applied technology,
-        and industry-relevant research workflows.
-      </p>
-    </div>
-  </div>
+    <!-- Main Content -->
+    <section class="container section-spacer" id="about">
+        <div class="bento-grid">
+            <!-- Theorem Tribe -->
+            <div class="card col-6">
+                <div class="card-header">
+                    <div class="card-num">01</div>
+                    <div class="card-icon"><i data-lucide="book-open" size="32"></i></div>
+                </div>
+                <h3>Theorem Tribe</h3>
+                <p>Dedicated to deep research—reading academic papers, building strong theoretical foundations, and
+                    nurturing long-term scientific curiosity through rigorous collaboration.</p>
+            </div>
 
-  <div class="highlight">
-    <h2>Why This Seminar?</h2>
-    <p>
-      This seminar introduces students to authentic research workflows,
-      interdisciplinary thinking, and innovation beyond textbooks.
-    </p>
-  </div>
+            <!-- Steminate -->
+            <div class="card col-6">
+                <div class="card-header">
+                    <div class="card-num">02</div>
+                    <div class="card-icon"><i data-lucide="flask-conical" size="32"></i></div>
+                </div>
+                <h3>Steminate</h3>
+                <p>Emphasizing mentorship and real-world problem solving. We guide students through practical
+                    challenges, applied technology, and industry-relevant workflows.</p>
+            </div>
 
-  <h2 style="margin-top:70px;">Guest Speakers</h2>
+            <!-- Why This Seminar -->
+            <div class="card col-12">
+                <div class="card-header">
+                    <div class="card-num">03</div>
+                    <div class="card-icon"><i data-lucide="lightbulb" size="32"></i></div>
+                </div>
+                <h3>Why This Seminar?</h3>
+                <p style="max-width: 800px;">This seminar introduces students to authentic research workflows,
+                    interdisciplinary thinking, and innovation that goes beyond standard textbooks. It is where academia
+                    meets application.</p>
 
-  <div class="cards">
-    <div class="card magnetic coming-soon">
-      <h3>Guest Speaker 1</h3>
-      <p>
-        An experienced researcher sharing insights into research journeys,
-        idea development, and impactful scientific work.
-      </p>
-    </div>
+                <!-- Meeting Details -->
+                <div class="details-card">
+                    <div class="detail-item">
+                        <div class="detail-icon"><i data-lucide="calendar" size="24"></i></div>
+                        <div class="detail-text">
+                            <h4>Date</h4>
+                            <p>31st January 2026</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-icon"><i data-lucide="clock" size="24"></i></div>
+                        <div class="detail-text">
+                            <h4>Time</h4>
+                            <p>TBA</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-icon"><i data-lucide="video" size="24"></i></div>
+                        <div class="detail-text">
+                            <h4>Platform</h4>
+                            <p>Google Meet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="card magnetic coming-soon">
-      <h3>Guest Speaker 2</h3>
-      <p>
-        A domain expert bridging academia and industry, guiding students on
-        interdisciplinary research and applied innovation.
-      </p>
-    </div>
-  </div>
-</section>
+        <!-- Guest Speakers -->
+        <h2 id="speakers" style="font-family: var(--font-serif); font-size: 2.5rem; margin-bottom: 32px;">Guest Speakers
+        </h2>
+        <div class="speakers-container">
+            <p class="speakers-placeholder">Announcing Soon, Stay Tuned!</p>
+        </div>
+    </section>
 
-<div class="logos-section" id="logosSection">
+    <!-- Premium Big Footer -->
+    <!-- Sleek Premium Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-top">
+                <!-- Brand -->
+                <div class="footer-brand-section">
+                    <span class="footer-brand-name">TheoremTribe</span>
+                    <p class="footer-tagline">
+                        Cultivating the next generation of researchers and innovators through collaboration.
+                    </p>
+                </div>
 
-  <!-- Theorem Tribe -->
-  <div class="logo-group left">
-    <div class="logo">
-      <img src="./assets/theorem_tribe_logo.jpg" alt="Theorem Tribe" draggable="false">
-    </div>
+                <!-- Nav Group -->
+                <div class="footer-nav-group">
+                    <div class="footer-col">
+                        <h4>Navigation</h4>
+                        <ul class="footer-links">
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#speakers">Speakers</a></li>
+                        </ul>
+                    </div>
 
-    <div class="social-reveal socials-left">
-      <a href="https://www.instagram.com/theorem_tribe/" target="_blank">Instagram</a>
-      <a href="https://www.linkedin.com/company/theorem-tribe" target="_blank">LinkedIn</a>
-    </div>
-  </div>
+                    <div class="footer-col">
+                        <h4>Connect</h4>
+                        <ul class="footer-links">
+                            <li><a href="https://www.instagram.com/theorem_tribe/" target="_blank">Instagram (Theorem
+                                    Tribe)</a></li>
+                            <li><a href="https://www.linkedin.com/company/theorem-tribe" target="_blank">LinkedIn
+                                    (Theorem Tribe)</a></li>
+                            <li><a href="https://www.linkedin.com/company/steminate" target="_blank">LinkedIn
+                                    (Steminate)</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-  <!-- Steminate -->
-  <div class="logo-group right">
-    <div class="social-reveal socials-right">
-      <a href="https://www.instagram.com/steminateindia/" target="_blank">Instagram</a>
-      <a href="https://www.linkedin.com/company/steminate" target="_blank">LinkedIn</a>
-    </div>
+            <div class="footer-divider"></div>
 
-    <div class="logo">
-      <img src="./assets/steminate_logo.jpg" alt="Steminate" draggable="false">
-    </div>
-  </div>
+            <div class="footer-bottom">
+                <div>&copy; 2025 Theorem Tribe x Steminate.</div>
 
-</div>
+                <div style="display: flex; gap: 12px;">
+                    <a href="#home" class="footer-social-pill">
+                        <i data-lucide="arrow-up" size="16"></i>
+                        Back to Top
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
 
+        // Theme Toggle Logic
+        const toggleBtn = document.getElementById('themeToggle');
+        const html = document.documentElement;
 
-<footer>© 2025 Theorem Tribe × Steminate</footer>
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        // Icons adjust automatically via CSS
 
-<script>
+        toggleBtn.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
-/* ================= LOGO SPLIT ON SCROLL ================= */
-
-const logosSection = document.getElementById('logosSection');
-
-window.addEventListener('scroll', () => {
-  const rect = logosSection.getBoundingClientRect();
-  const triggerPoint = window.innerHeight * 0.75;
-
-  if (rect.top < triggerPoint) {
-    logosSection.classList.add('active');
-  } else {
-    logosSection.classList.remove('active');
-  }
-});
-
-/* ================= CURSOR ================= */
-const cursor = document.getElementById('cursor');
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
-});
-
-/* ================= MAGNETIC CARDS ================= */
-document.querySelectorAll('.magnetic').forEach(el => {
-  el.addEventListener('mousemove', e => {
-    const r = el.getBoundingClientRect();
-    const x = e.clientX - r.left - r.width / 2;
-    const y = e.clientY - r.top - r.height / 2;
-    el.style.transform = `
-      perspective(900px)
-      rotateX(${-y / 12}deg)
-      rotateY(${x / 12}deg)
-      translateY(-10px)
-      scale(1.03)
-    `;
-  });
-  el.addEventListener('mouseleave', () => el.style.transform = '');
-});
-
-/* ================= MAGNETIC TITLE ================= */
-const title = document.querySelector('.hero-title');
-title.addEventListener('mousemove', e => {
-  const r = title.getBoundingClientRect();
-  const x = e.clientX - r.left - r.width / 2;
-  const y = e.clientY - r.top - r.height / 2;
-  title.classList.add('active');
-  title.style.transform = `
-    perspective(1000px)
-    rotateX(${-y / 20}deg)
-    rotateY(${x / 20}deg)
-    translateY(-10px)
-    scale(1.05)
-  `;
-});
-title.addEventListener('mouseleave', () => {
-  title.classList.remove('active');
-  title.style.transform = '';
-});
-
-/* ================= PARTICLES ================= */
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-let w, h;
-function resize() {
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
-
-const particles = Array.from({ length: 100 }, () => ({
-  x: Math.random() * w,
-  y: Math.random() * h,
-  r: Math.random() * 2 + 1,
-  v: Math.random() * 0.8 + 0.2
-}));
-
-function animate() {
-  ctx.clearRect(0, 0, w, h);
-  particles.forEach(p => {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(0,212,255,0.35)';
-    ctx.fill();
-    p.y -= p.v;
-    if (p.y < 0) p.y = h;
-  });
-  requestAnimationFrame(animate);
-}
-animate();
-</script>
-
+            // Switch Theme
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            // CSS handles the rotation and icon opacity
+        });
+    </script>
 </body>
+
 </html>
